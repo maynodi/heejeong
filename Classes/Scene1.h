@@ -32,7 +32,14 @@ class Scene1 : public cocos2d::LayerColor
 {
 private:
     cocos2d::Sprite* pPlayer_;
-    int time_;
+    cocos2d::Sprite* pTrigger_;
+    std::list<cocos2d::Sprite*> coin_;
+    
+    float time_ = 0.f;
+    int minute_ = 0;
+    
+    int score_;
+    int minRange_; //코인 생성범위 조절
     
     bool isMoveUp_;
     bool isMoveDown_;
@@ -45,7 +52,8 @@ public:
     virtual bool init() override;
     
     void initData();
-    void setPlayerSprite();
+    void setSprite();
+    void makeCoin();
     void setUILabel();
     
     virtual void onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event) override;
@@ -56,6 +64,10 @@ public:
     void playerMove(float deltaTime);
     
     void callEveryFrame(float deltaTime);
+    
+    void changeScene(Ref* sender);
+    
+    void collisionCheck();
     
     virtual void update(float deltaTime) override;
     

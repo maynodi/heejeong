@@ -31,7 +31,6 @@
 		46880B8919C43A87006E1F66 /* AppDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46880B8419C43A87006E1F66 /* AppDelegate.cpp */; };
 		46880B8A19C43A87006E1F66 /* Scene1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46880B8619C43A87006E1F66 /* Scene1.cpp */; };
 		46880B8B19C43A87006E1F66 /* Scene1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46880B8619C43A87006E1F66 /* Scene1.cpp */; };
-		5016D0B425F5D17B00AAB564 /* Scene2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5016D0B225F5D17B00AAB564 /* Scene2.cpp */; };
 		503AE0F817EB97AB00D1A890 /* Icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 503AE0F617EB97AB00D1A890 /* Icon.icns */; };
 		503AE10517EB98FF00D1A890 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 503AE10317EB98FF00D1A890 /* main.cpp */; };
 		503AE11B17EB9C5A00D1A890 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 503AE11A17EB9C5A00D1A890 /* IOKit.framework */; };
@@ -39,6 +38,8 @@
 		504DFFD625F5E6C6000A8AF7 /* UILayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504DFFD525F5E6C6000A8AF7 /* UILayer.cpp */; };
 		504DFFDB25F5FB2C000A8AF7 /* white.png in Resources */ = {isa = PBXBuildFile; fileRef = 504DFFDA25F5FB2C000A8AF7 /* white.png */; };
 		504DFFDC25F5FB2C000A8AF7 /* white.png in Resources */ = {isa = PBXBuildFile; fileRef = 504DFFDA25F5FB2C000A8AF7 /* white.png */; };
+		507FBDB425F714D300BA5815 /* Scene2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 507FBDB325F714D300BA5815 /* Scene2.cpp */; };
+		507FBDB525F714D300BA5815 /* Scene2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 507FBDB325F714D300BA5815 /* Scene2.cpp */; };
 		5087E76317EB910900C73F5D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		5087E76717EB910900C73F5D /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB412928DE900B8313A /* libz.dylib */; };
 		5087E76817EB910900C73F5D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF1C47EA1293683800B63C5D /* QuartzCore.framework */; };
@@ -126,8 +127,6 @@
 		46880B8519C43A87006E1F66 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		46880B8619C43A87006E1F66 /* Scene1.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Scene1.cpp; sourceTree = "<group>"; };
 		46880B8719C43A87006E1F66 /* Scene1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scene1.h; sourceTree = "<group>"; };
-		5016D0B225F5D17B00AAB564 /* Scene2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Scene2.cpp; sourceTree = "<group>"; };
-		5016D0B325F5D17B00AAB564 /* Scene2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scene2.h; sourceTree = "<group>"; };
 		503AE0F617EB97AB00D1A890 /* Icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Icon.icns; sourceTree = "<group>"; };
 		503AE0F717EB97AB00D1A890 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		503AE10317EB98FF00D1A890 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = mac/main.cpp; sourceTree = "<group>"; };
@@ -139,6 +138,8 @@
 		504DFFD425F5E6C6000A8AF7 /* UILayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UILayer.h; sourceTree = "<group>"; };
 		504DFFD525F5E6C6000A8AF7 /* UILayer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = UILayer.cpp; sourceTree = "<group>"; };
 		504DFFDA25F5FB2C000A8AF7 /* white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = white.png; sourceTree = "<group>"; };
+		507FBDB225F714D300BA5815 /* Scene2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Scene2.h; sourceTree = "<group>"; };
+		507FBDB325F714D300BA5815 /* Scene2.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Scene2.cpp; sourceTree = "<group>"; };
 		5087E76F17EB910900C73F5D /* NewGame-desktop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "NewGame-desktop.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5087E78817EB974C00C73F5D /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		5087E78A17EB975400C73F5D /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
@@ -294,8 +295,6 @@
 		46880B8319C43A87006E1F66 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				5016D0B225F5D17B00AAB564 /* Scene2.cpp */,
-				5016D0B325F5D17B00AAB564 /* Scene2.h */,
 				46880B8419C43A87006E1F66 /* AppDelegate.cpp */,
 				46880B8519C43A87006E1F66 /* AppDelegate.h */,
 				46880B8619C43A87006E1F66 /* Scene1.cpp */,
@@ -304,6 +303,8 @@
 				504DFFD125F5E51E000A8AF7 /* Player.h */,
 				504DFFD425F5E6C6000A8AF7 /* UILayer.h */,
 				504DFFD525F5E6C6000A8AF7 /* UILayer.cpp */,
+				507FBDB225F714D300BA5815 /* Scene2.h */,
+				507FBDB325F714D300BA5815 /* Scene2.cpp */,
 			);
 			name = Classes;
 			path = ../Classes;
@@ -467,8 +468,8 @@
 				1AF87B781F6F77F7007BE51C /* AppController.mm in Sources */,
 				504DFFD225F5E51E000A8AF7 /* Player.cpp in Sources */,
 				1AF87B8B1F6F782A007BE51C /* RootViewController.mm in Sources */,
+				507FBDB425F714D300BA5815 /* Scene2.cpp in Sources */,
 				46880B8819C43A87006E1F66 /* AppDelegate.cpp in Sources */,
-				5016D0B425F5D17B00AAB564 /* Scene2.cpp in Sources */,
 				1AF87B8A1F6F7822007BE51C /* main.m in Sources */,
 				46880B8A19C43A87006E1F66 /* Scene1.cpp in Sources */,
 				504DFFD625F5E6C6000A8AF7 /* UILayer.cpp in Sources */,
@@ -482,6 +483,7 @@
 				46880B8919C43A87006E1F66 /* AppDelegate.cpp in Sources */,
 				503AE10517EB98FF00D1A890 /* main.cpp in Sources */,
 				46880B8B19C43A87006E1F66 /* Scene1.cpp in Sources */,
+				507FBDB525F714D300BA5815 /* Scene2.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

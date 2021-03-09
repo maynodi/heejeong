@@ -35,16 +35,21 @@ private:
     cocos2d::Sprite* pTrigger_;
     std::list<cocos2d::Sprite*> coin_;
     
-    float time_ = 0.f;
-    int minute_ = 0;
-    
-    int score_;
-    int minRange_; //코인 생성범위 조절
+    int minRange_ = 50; //코인 생성범위 조절
     
     bool isMoveUp_;
     bool isMoveDown_;
     bool isMoveLeft_;
     bool isMoveRight_;
+    
+    cocos2d::Vec2 originPos_;
+    
+public:
+    static float g_time;
+    static int g_score;
+    
+public:
+    void setPlayerOriginPos() { pPlayer_->setPosition(originPos_); }
     
 public:
     static cocos2d::Scene* createScene();
@@ -76,6 +81,10 @@ public:
     
     // implement the "static create()" method manually
     CREATE_FUNC(Scene1);
+    
+public:
+    Scene1();
+    ~Scene1();
 };
 
 

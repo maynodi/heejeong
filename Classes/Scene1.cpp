@@ -32,6 +32,21 @@
 USING_NS_CC;
 using namespace std;
 
+float Scene1::g_time = 0.f;
+int Scene1::g_score = 0;
+
+Scene1::Scene1()
+    : pPlayer_(nullptr)
+    , pTrigger_(nullptr)
+{
+    
+}
+
+Scene1::~Scene1()
+{
+    
+}
+
 Scene* Scene1::createScene()
 {
     Scene* pScene = Scene::create();
@@ -40,8 +55,6 @@ Scene* Scene1::createScene()
     pScene->addChild(pLayer);
     
     return pScene;
-    
-    //return HelloWorld::create();
 }
 
 // Print useful error message instead of segfaulting when files are not there.
@@ -81,12 +94,7 @@ bool Scene1::init()
 }
 
 void Scene1::initData()
-{
-    time_ = 0.f;
-    minute_ = 0;
-    score_ = 0;
-    minRange_ = 50;
-    
+{    
     isMoveUp_ = false;
     isMoveDown_ = false;
     isMoveLeft_ = false;
@@ -104,8 +112,8 @@ void Scene1::setSprite()
     pPlayer_->setScale(0.2f);
     
     int halfLength =pPlayer_->getContentSize().width * pPlayer_->getScaleX()/2;
-    pPlayer_->setPosition(Vec2(origin.x + halfLength
-                               , origin.y + visibleSize.height/2));
+    originPos_ = Vec2(origin.x + halfLength, origin.y + visibleSize.height/2);
+    pPlayer_ -> setPosition(originPos_);
     
     
     this->addChild(pPlayer_);
@@ -149,7 +157,7 @@ void Scene1::setUILabel()
     Size winSize = Director::getInstance()->getWinSize();
     
     //타이머ui - tag :1
-    Label* TimerLabel = Label::createWithTTF(/*StringUtils::format("(Time) %d : %d ",time_)*/"", "fonts/arial.ttf", 30);
+    Label* TimerLabel = Label::createWithTTF("", "fonts/arial.ttf", 30);
     TimerLabel->setColor(Color3B::BLACK);
     TimerLabel->setAnchorPoint(Vec2(0.5f,1));
     TimerLabel->setPosition(Vec2(winSize.width/2 , winSize.height -10));
@@ -158,7 +166,7 @@ void Scene1::setUILabel()
     this->addChild(TimerLabel);
     
     //점수ui - tag :2
-    Label* ScoreLabel = Label::createWithTTF(StringUtils::format("(score) %d", score_), "fonts/arial.ttf", 30);
+    Label* ScoreLabel = Label::createWithTTF(StringUtils::format("%d", g_score), "fonts/arial.ttf", 30);
     ScoreLabel->setColor(Color3B::BLACK);
     ScoreLabel->setAnchorPoint(Vec2(1,1));
     ScoreLabel->setPosition(Vec2(winSize.width - 10 , winSize.height -10));
@@ -168,9 +176,7 @@ void Scene1::setUILabel()
 }
 
 void Scene1::onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event)
-{   
-    //int speed = 3;
-    
+{
     switch (keyCode)
     {
         case cocos2d::EventKeyboard::KeyCode::KEY_UP_ARROW:
@@ -209,11 +215,6 @@ void Scene1::onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Even
 
 void Scene1::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event)
 {
-//    isMoveUp_= false;
-//    isMoveDown_= false;
-//    isMoveLeft_= false;
-//    isMoveRight_= false;
-    
     if(isMoveUp_)
     {
         isMoveUp_=!isMoveUp_;
@@ -310,31 +311,21 @@ void Scene1::playerMove(float deltaTime)
 
 void Scene1::callEveryFrame(float deltaTime)
 {
-    time_ += deltaTime;
+    g_time += deltaTime;
     
-    int minute =0;
-    
-    if(60 <= time_)
-    {
-        minute += 1;
-        time_=0;
-    }
-    
-    int sec = time_;
+    int minute = g_time / 60;
+    int sec = g_time;
+    sec = sec % 60;
     
     //타이머 ui
       Label* timerLabel = static_cast<Label*>(this->getChildByTag(TIMER_TAG));
       timerLabel->setString(StringUtils::format("%02d : %02d", minute, sec));
-    
-          
-    123456123
-    
-    
 }
 
 void Scene1::changeScene(Ref* sender)
 {
-    Director::getInstance()->replaceScene((Scene*)sender);
+    pPlayer_->setPosition(originPos_);
+    Director::getInstance()->pushScene((Scene*)sender);
 }
 
 void Scene1::collisionCheck()
@@ -349,13 +340,13 @@ void Scene1::collisionCheck()
     
     std::list<cocos2d::Sprite*>::iterator iter_begin = coin_.begin();
     
-    for(; iter_begin != coin_.end() ; ++iter_begin)   //for(const cocos2d::Sprite* pSprite : coin_)
+    for(; iter_begin != coin_.end() ; ++iter_begin)
     {
         Rect coinRect = (*iter_begin)->getBoundingBox();
         
         if(coinRect.intersectsRect(playerRect))
         {
-            score_ += 1;
+            g_score += 1;
             coin_.erase(iter_begin);
             this->removeChild((*iter_begin));
             break;
@@ -365,22 +356,10 @@ void Scene1::collisionCheck()
 
 void Scene1::update(float deltaTime)
 {
-    CCLOG("%f", deltaTime);
-    
-//    //타이머 ui
-//    Label* timerLabel = static_cast<Label*>(this->getChildByTag(TIMER_TAG));
-//    //timerLabel->setString(StringUtils::format("(Time) %2.1f" , time_));
-//
-//    if(0 < minute_)
-//        timerLabel->setString(StringUtils::format("(Time) %02d : %02d", minute_, time_));
-//    else
-//        timerLabel->setString(StringUtils::format("(Time) %02d : &02d", time_ ));
-    
     //점수 ui
     Label* scoreLabel  = static_cast<Label*>(this->getChildByTag(SCORE_TAG));
-    scoreLabel->setString(StringUtils::format("(score) %d", score_));
+    scoreLabel->setString(StringUtils::format("%d", g_score));
     
     //충돌
     collisionCheck();
-    
 }

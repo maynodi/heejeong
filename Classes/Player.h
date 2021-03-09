@@ -9,10 +9,10 @@
 
 #include <stdio.h>
 
-class Player : public cocos2d::Node
+class Player : public cocos2d::Sprite
 {
 public:
-    static cocos2d::Node* create();
+    static cocos2d::Sprite* create();
     
     virtual bool init();
 };

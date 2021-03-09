@@ -35,11 +35,12 @@
 		503AE10517EB98FF00D1A890 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 503AE10317EB98FF00D1A890 /* main.cpp */; };
 		503AE11B17EB9C5A00D1A890 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 503AE11A17EB9C5A00D1A890 /* IOKit.framework */; };
 		504DFFD225F5E51E000A8AF7 /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504DFFD025F5E51E000A8AF7 /* Player.cpp */; };
-		504DFFD625F5E6C6000A8AF7 /* UILayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504DFFD525F5E6C6000A8AF7 /* UILayer.cpp */; };
+		504DFFD625F5E6C6000A8AF7 /* Manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504DFFD525F5E6C6000A8AF7 /* Manager.cpp */; };
 		504DFFDB25F5FB2C000A8AF7 /* white.png in Resources */ = {isa = PBXBuildFile; fileRef = 504DFFDA25F5FB2C000A8AF7 /* white.png */; };
 		504DFFDC25F5FB2C000A8AF7 /* white.png in Resources */ = {isa = PBXBuildFile; fileRef = 504DFFDA25F5FB2C000A8AF7 /* white.png */; };
 		507FBDB425F714D300BA5815 /* Scene2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 507FBDB325F714D300BA5815 /* Scene2.cpp */; };
 		507FBDB525F714D300BA5815 /* Scene2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 507FBDB325F714D300BA5815 /* Scene2.cpp */; };
+		507FBDB625F7878800BA5815 /* Manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 504DFFD525F5E6C6000A8AF7 /* Manager.cpp */; };
 		5087E76317EB910900C73F5D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		5087E76717EB910900C73F5D /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB412928DE900B8313A /* libz.dylib */; };
 		5087E76817EB910900C73F5D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF1C47EA1293683800B63C5D /* QuartzCore.framework */; };
@@ -135,8 +136,8 @@
 		503AE11A17EB9C5A00D1A890 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		504DFFD025F5E51E000A8AF7 /* Player.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Player.cpp; sourceTree = "<group>"; };
 		504DFFD125F5E51E000A8AF7 /* Player.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
-		504DFFD425F5E6C6000A8AF7 /* UILayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UILayer.h; sourceTree = "<group>"; };
-		504DFFD525F5E6C6000A8AF7 /* UILayer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = UILayer.cpp; sourceTree = "<group>"; };
+		504DFFD425F5E6C6000A8AF7 /* Manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Manager.h; sourceTree = "<group>"; };
+		504DFFD525F5E6C6000A8AF7 /* Manager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Manager.cpp; sourceTree = "<group>"; };
 		504DFFDA25F5FB2C000A8AF7 /* white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = white.png; sourceTree = "<group>"; };
 		507FBDB225F714D300BA5815 /* Scene2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Scene2.h; sourceTree = "<group>"; };
 		507FBDB325F714D300BA5815 /* Scene2.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Scene2.cpp; sourceTree = "<group>"; };
@@ -301,8 +302,8 @@
 				46880B8719C43A87006E1F66 /* Scene1.h */,
 				504DFFD025F5E51E000A8AF7 /* Player.cpp */,
 				504DFFD125F5E51E000A8AF7 /* Player.h */,
-				504DFFD425F5E6C6000A8AF7 /* UILayer.h */,
-				504DFFD525F5E6C6000A8AF7 /* UILayer.cpp */,
+				504DFFD425F5E6C6000A8AF7 /* Manager.h */,
+				504DFFD525F5E6C6000A8AF7 /* Manager.cpp */,
 				507FBDB225F714D300BA5815 /* Scene2.h */,
 				507FBDB325F714D300BA5815 /* Scene2.cpp */,
 			);
@@ -472,7 +473,7 @@
 				46880B8819C43A87006E1F66 /* AppDelegate.cpp in Sources */,
 				1AF87B8A1F6F7822007BE51C /* main.m in Sources */,
 				46880B8A19C43A87006E1F66 /* Scene1.cpp in Sources */,
-				504DFFD625F5E6C6000A8AF7 /* UILayer.cpp in Sources */,
+				504DFFD625F5E6C6000A8AF7 /* Manager.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -482,6 +483,7 @@
 			files = (
 				46880B8919C43A87006E1F66 /* AppDelegate.cpp in Sources */,
 				503AE10517EB98FF00D1A890 /* main.cpp in Sources */,
+				507FBDB625F7878800BA5815 /* Manager.cpp in Sources */,
 				46880B8B19C43A87006E1F66 /* Scene1.cpp in Sources */,
 				507FBDB525F714D300BA5815 /* Scene2.cpp in Sources */,
 			);

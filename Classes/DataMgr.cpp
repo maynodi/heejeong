@@ -43,5 +43,6 @@ void DataMgr::destroyInstance()
 
 bool DataMgr::init()
 {
+    score_ = UserDefault::getInstance()->getIntegerForKey("score");
     return true;
 }

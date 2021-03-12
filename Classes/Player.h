@@ -23,6 +23,7 @@ public:
     
 public:
     cocos2d::Sprite* getSprite() { return pSprite_; }
+    cocos2d::Vec2 getPlayerPos() { return pSprite_->getPosition(); }
     
 public:
     virtual void update(float deltaTime) override;

@@ -6,11 +6,13 @@
 
 #include "Stage1Layer.h"
 #include "Stage2Layer.h"
+#include "StageLayer.h"
 #include "UILayer.h"
 #include "Player.h"
 #include "Coin.h"
 
 #include "StageDefine.h"
+//#include "../cocos2d/external/json/rapidjson.h"
 
 USING_NS_CC;
 
@@ -87,4 +89,71 @@ void GameScene::addStage(std::string key, Layer* pLayer)
     }
     
     mapStage_[key] = pLayer;
+}
+
+void GameScene::save()
+{
+    UserDefault* pUserDefault = UserDefault::getInstance();
+
+    int stageNumInt = 0;
+
+    const char* X = {};
+    const char* Y = {};
+    for(auto map : mapStage_)
+    {
+        Vec2 playePos = static_cast<StageLayer*>(map.second)->getPlayer()->getPlayerPos();
+
+        char stageNum = stageNumInt + '0';
+        X = "playerX";
+        Y = "playerY";
+        char* playerX = std::strcat(&stageNum, X);
+        char* playerY = std::strcat(&stageNum, Y);
+
+        pUserDefault->setFloatForKey(playerX, playePos.x);
+        pUserDefault->setFloatForKey(playerY, playePos.y);
+
+
+        Vector<Node*> children = static_cast<StageLayer*>(map.second)->getChildren();
+
+        int cntInt = 0;
+        for(auto child : children)
+        {
+            if("Coin" == child->getName())
+            {
+                char cnt = cntInt + '0';
+                X = "coinX";
+                Y = "coinY";
+                char* coinX = std::strcat(&cnt, X);
+                char* coinY = std::strcat(&cnt, Y);
+
+                Vec2 coinPos = ((Coin*)child)->getCoinPos();
+                pUserDefault->setFloatForKey(coinX, coinPos.x);
+                pUserDefault->setFloatForKey(coinY, coinPos.y);
+
+                ++cntInt;
+            }
+        }
+
+        ++stageNumInt;
+    }
+
+    pUserDefault->setIntegerForKey("score", DataMgr::getInstance()->getScore());
+
+    pUserDefault->flush();
+    
+    
+    
+    
+    
+    
+
+    std::string path = FileUtils::getInstance()->getWritablePath() + "test.txt";
+    FILE* fp = fopen(path.c_str(), "wt");
+
+    if(nullptr != fp)
+    {
+        int data = 200;
+        fwrite((void*)&data, sizeof(int), 1, fp);
+        fclose(fp);
+    }
 }

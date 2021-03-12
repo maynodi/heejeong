@@ -21,6 +21,9 @@ public:
     virtual bool init() override;
     virtual void update(float dt) override;
     
+private:
+    virtual void keyCheck() override;
+    
 public:
     Stage2Layer();
     ~Stage2Layer();

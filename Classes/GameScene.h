@@ -20,6 +20,7 @@ public:
 public:
     void changeStage(std::string stageName);
     void addStage(std::string key, cocos2d::Layer* pLayer);
+    void save();
     
 public:
     GameScene();

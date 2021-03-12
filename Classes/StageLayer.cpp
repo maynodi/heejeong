@@ -7,6 +7,12 @@
 
 #include "StageLayer.h"
 
+#include "KeyMgr.h"
+#include "DataMgr.h"
+
+#include "TitleScene.h"
+
+
 USING_NS_CC;
 
 bool StageLayer::init(const Color4B& color)
@@ -48,4 +54,74 @@ void StageLayer::makeCoin()
         this->addChild(pCoin);
     }
     
+}
+
+void StageLayer::keyCheck()
+{
+    if(KeyMgr::getInstance()->getIsMove(KEY::KEY_Q))
+    {
+        makeCoin();
+    }
+    else if(KeyMgr::getInstance()->getIsMove(KEY::KEY_ESCAPE))
+    {
+        Director::getInstance()->replaceScene(TitleScene::create());
+    }
+    else if(KeyMgr::getInstance()->getIsMove(KEY::KEY_1))
+    {
+        save();
+    }
+}
+
+void StageLayer::save()
+{
+    char stageNum = {};
+    if(stage::name::Stage1 == this->getName())
+    {
+        stageNum = 0 + '0';
+    }
+    else if(stage::name::Stage2 == this->getName())
+    {
+       stageNum = 1 + '0';
+    }
+    
+    UserDefault* pUserDefault = UserDefault::getInstance();
+    
+    Vec2 playePos = pPlayer_->getPlayerPos();
+    
+    const char* X = {};
+    const char* Y = {};
+    
+    X = "playerX";
+    Y = "playerY";
+    char* playerX = std::strcat(&stageNum, X);
+    char* playerY = std::strcat(&stageNum, Y);
+    
+    pUserDefault->setFloatForKey(playerX, playePos.x);
+    pUserDefault->setFloatForKey(playerY, playePos.y);
+    
+    
+    Vector<Node*> children = this->getChildren();
+    
+    int cntInt = 0;
+    for(auto child : children)
+    {
+        if("Coin" == child->getName())
+        {
+            
+            char cnt = cntInt + '0';
+            X = "coinX";
+            Y = "coinY";
+            char* coinX = std::strcat(&cnt, X);
+            char* coinY = std::strcat(&cnt, Y);
+            
+            Vec2 coinPos = ((Coin*)child)->getCoinPos();
+            pUserDefault->setFloatForKey(coinX, coinPos.x);
+            pUserDefault->setFloatForKey(coinY, coinPos.y);
+            
+            ++cntInt;
+        }
+    }
+    
+    pUserDefault->setIntegerForKey("score", DataMgr::getInstance()->getScore());
+    pUserDefault->flush();
 }

@@ -22,7 +22,11 @@ public:
 
 public:
     cocos2d::Sprite* getSprite() { return pSprite_; }
-
+    cocos2d::Vec2 getCoinPos()
+    {
+        return pSprite_->getPosition();
+    }
+    
 public:
     void collision();
     

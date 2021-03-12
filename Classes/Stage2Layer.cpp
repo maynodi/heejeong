@@ -7,18 +7,14 @@
 
 #include "Stage2Layer.h"
 
-#include "DataMgr.h"
 #include "KeyMgr.h"
 
 #include "GameScene.h"
-#include "Player.h"
-#include "Stage1Layer.h"
 
 USING_NS_CC;
 
 Stage2Layer::Stage2Layer()
 {
-    
 }
 
 Stage2Layer::~Stage2Layer()
@@ -51,15 +47,17 @@ bool Stage2Layer::init()
 
 void Stage2Layer::update(float dt)
 {
-    if(KeyMgr::getInstance()->getIsMove(KEY::KEY_Q))
-    {
-        makeCoin();
-    }
-    else if(KeyMgr::getInstance()->getIsMove(KEY::KEY_O))
-    {
-        GameScene* scene = (GameScene*)Director::getInstance()->getRunningScene();
-        
-        scene->changeStage("Stage1");
-    }
+    keyCheck();
 }
 
+void Stage2Layer::keyCheck()
+{
+    StageLayer::keyCheck();
+    
+    if(KeyMgr::getInstance()->getIsMove(KEY::KEY_O))
+     {
+         GameScene* scene = (GameScene*)Director::getInstance()->getRunningScene();
+         
+         scene->changeStage(stage::name::Stage1);
+     }
+}

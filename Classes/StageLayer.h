@@ -24,7 +24,11 @@ public:
     virtual void onEnter() override;
     
 public:
-    void makeCoin();
+    Player* getPlayer() { return pPlayer_; }
     
+public:
+    void makeCoin();
+    virtual void keyCheck();
+    void save();
     
 };

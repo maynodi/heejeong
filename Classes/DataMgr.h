@@ -25,7 +25,9 @@ public:
     bool init();
     
 public:
-    void setScore() { score_ += 1; }
+    void addScore() { score_ += 1; }
+    
+public:
     int getScore() { return score_; }
     
 private:

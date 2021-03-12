@@ -9,15 +9,10 @@
 
 #include "cocos2d.h"
 
-class Player;
-class Coin;
+#include "StageLayer.h"
 
-class Stage1Layer : public cocos2d::LayerColor
+class Stage1Layer : public StageLayer
 {
-private:
-    Player* pPlayer_;
-    std::list<Coin*> coinList_;
-    
 public:
     static Stage1Layer* create();
     
@@ -26,15 +21,7 @@ public:
     virtual void update(float dt) override;
     
 public:
-    Player* getPlayer() { return pPlayer_; }
-    std::list<Coin*>& getCoinList() { return coinList_; }
-    
-public:
-    void makeCoin();
-    
-public:
     Stage1Layer();
     ~Stage1Layer();
 };
-
 

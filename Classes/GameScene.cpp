@@ -10,15 +10,19 @@
 #include "Player.h"
 #include "Coin.h"
 
+#include "StageDefine.h"
+
 USING_NS_CC;
 
 GameScene::GameScene()
-    : stage_(nullptr)
+    : curStage_(nullptr)
 {
 }
 
 GameScene::~GameScene()
 {
+    KeyMgr::destroyInstance();
+    DataMgr::destroyInstance();
 }
 
 GameScene* GameScene::create()
@@ -43,9 +47,11 @@ bool GameScene::init()
     {
         return false;
     }
+
+    addStage(stage::name::Stage1, Stage1Layer::create());
+    addStage(stage::name::Stage2, Stage2Layer::create());
     
-    stage_ = Stage1Layer::create();
-    this->addChild(stage_);
+    changeStage(stage::name::Stage1);
     
     KeyMgr* pKeyMgr = KeyMgr::getInstance();
     this->addChild(pKeyMgr);
@@ -54,50 +60,31 @@ bool GameScene::init()
     pUI->setLocalZOrder(99);
     this->addChild(pUI);
     
-    this->scheduleUpdate();
-    
     return true;
 }
 
-void GameScene::update(float deltaTime)
+void GameScene::changeStage(std::string stageName)
 {
-    collisionCheck();
+    Layer* stage = mapStage_[stageName];
+    if(nullptr == stage)
+        assert(0);
     
-    if(KeyMgr::getInstance()->getIsMove(KEY::KEY_P))
-    {
-        this->removeChild(stage_);
-
-        stage_ = Stage2Layer::create();
-        this->addChild(stage_);
-    }
+    curStage_ = stage;
+    
+    this->removeChildByName("Stage");
+    this->addChild(stage);
 }
 
-void GameScene::collisionCheck()
+void GameScene::addStage(std::string key, Layer* pLayer)
 {
-    Player* pPlayer = static_cast<Stage1Layer*>(stage_)->getPlayer();
+    pLayer->retain();
     
-    if(nullptr == pPlayer)
-        return;
-    
-    std::list<Coin*>* coinList = &static_cast<Stage1Layer*>(stage_)->getCoinList();
-    
-    if(coinList->empty())
-       return;
-    
-    Rect playerRect = pPlayer->getSprite()->getBoundingBox();
-    
-    std::list<Coin*>::iterator iter_begin = coinList->begin();
-    for(; iter_begin != coinList->end() ; ++iter_begin)
+    auto iter = mapStage_.find(key);
+    if(iter != mapStage_.end())
     {
-        Rect coinRect = (*iter_begin)->getSprite()->getBoundingBox();
-        
-        if(coinRect.intersectsRect(playerRect))
-        {
-            DataMgr::getInstance()->setScore();
-            
-            coinList->erase(iter_begin);
-            stage_->removeChild((*iter_begin));
-            break;
-        }
+        assert(0);
+        return;
     }
+    
+    mapStage_[key] = pLayer;
 }

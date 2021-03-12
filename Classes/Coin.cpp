@@ -7,6 +7,10 @@
 
 #include "Coin.h"
 
+#include "DataMgr.h"
+
+#include "GameScene.h"
+
 USING_NS_CC;
 
 Coin::Coin()
@@ -42,11 +46,19 @@ bool Coin::init()
         return false;
     }
     
+    this->setName("Coin");
+    
     pSprite_ = Sprite::create("white.png");
     pSprite_->setScale(0.1f);
     pSprite_->setColor(Color3B::YELLOW);
-
+    
     this->addChild(pSprite_);
     
     return true;
+}
+
+void Coin::collision()
+{
+    DataMgr::getInstance()->addScore();
+    this->removeFromParent();
 }

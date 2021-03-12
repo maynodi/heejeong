@@ -29,6 +29,8 @@
 		46880B8219C43A67006E1F66 /* HelloWorld.png in Resources */ = {isa = PBXBuildFile; fileRef = 46880B7A19C43A67006E1F66 /* HelloWorld.png */; };
 		46880B8819C43A87006E1F66 /* AppDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46880B8419C43A87006E1F66 /* AppDelegate.cpp */; };
 		46880B8919C43A87006E1F66 /* AppDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46880B8419C43A87006E1F66 /* AppDelegate.cpp */; };
+		5030955B25FB178600AC41B9 /* StageLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5030955A25FB178600AC41B9 /* StageLayer.cpp */; };
+		5030955C25FB178600AC41B9 /* StageLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5030955A25FB178600AC41B9 /* StageLayer.cpp */; };
 		503AE0F817EB97AB00D1A890 /* Icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 503AE0F617EB97AB00D1A890 /* Icon.icns */; };
 		503AE10517EB98FF00D1A890 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 503AE10317EB98FF00D1A890 /* main.cpp */; };
 		503AE11B17EB9C5A00D1A890 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 503AE11A17EB9C5A00D1A890 /* IOKit.framework */; };
@@ -141,6 +143,9 @@
 		46880B7A19C43A67006E1F66 /* HelloWorld.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = HelloWorld.png; sourceTree = "<group>"; };
 		46880B8419C43A87006E1F66 /* AppDelegate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AppDelegate.cpp; sourceTree = "<group>"; };
 		46880B8519C43A87006E1F66 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		5030955925FB178600AC41B9 /* StageLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StageLayer.h; sourceTree = "<group>"; };
+		5030955A25FB178600AC41B9 /* StageLayer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = StageLayer.cpp; sourceTree = "<group>"; };
+		5030955E25FB1AE900AC41B9 /* StageDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StageDefine.h; sourceTree = "<group>"; };
 		503AE0F617EB97AB00D1A890 /* Icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Icon.icns; sourceTree = "<group>"; };
 		503AE0F717EB97AB00D1A890 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		503AE10317EB98FF00D1A890 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = mac/main.cpp; sourceTree = "<group>"; };
@@ -343,10 +348,13 @@
 				50E46BE425F9BBC900919209 /* Player.h */,
 				50E46BF025F9EC8900919209 /* Coin.cpp */,
 				50E46BEF25F9EC8900919209 /* Coin.h */,
-				50E46BEB25F9BE9B00919209 /* KeyMgr.h */,
 				50E46BEC25F9BE9B00919209 /* KeyMgr.cpp */,
+				50E46BEB25F9BE9B00919209 /* KeyMgr.h */,
 				50E46BF825FA045A00919209 /* DataMgr.cpp */,
 				50E46BF725FA045A00919209 /* DataMgr.h */,
+				5030955925FB178600AC41B9 /* StageLayer.h */,
+				5030955A25FB178600AC41B9 /* StageLayer.cpp */,
+				5030955E25FB1AE900AC41B9 /* StageDefine.h */,
 			);
 			name = Classes;
 			path = ../Classes;
@@ -511,6 +519,7 @@
 			files = (
 				1AF87B781F6F77F7007BE51C /* AppController.mm in Sources */,
 				1AF87B8B1F6F782A007BE51C /* RootViewController.mm in Sources */,
+				5030955B25FB178600AC41B9 /* StageLayer.cpp in Sources */,
 				50E46BF925FA045A00919209 /* DataMgr.cpp in Sources */,
 				50E46BFD25FA113500919209 /* Stage2Layer.cpp in Sources */,
 				50E46BE625F9BBCA00919209 /* Player.cpp in Sources */,
@@ -536,6 +545,7 @@
 				50E46BE725F9BBCA00919209 /* Player.cpp in Sources */,
 				50E46BEE25F9BE9B00919209 /* KeyMgr.cpp in Sources */,
 				46880B8919C43A87006E1F66 /* AppDelegate.cpp in Sources */,
+				5030955C25FB178600AC41B9 /* StageLayer.cpp in Sources */,
 				50E46BE325F9B9D600919209 /* Stage1Layer.cpp in Sources */,
 				50E46BFA25FA045A00919209 /* DataMgr.cpp in Sources */,
 				503AE10517EB98FF00D1A890 /* main.cpp in Sources */,

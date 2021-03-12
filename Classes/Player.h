@@ -26,8 +26,11 @@ public:
     
 public:
     virtual void update(float deltaTime) override;
+    virtual void onEnter() override;
+    
+private:
     void move(float deltaTime);
-    void collisionCheck(cocos2d::Sprite* pSprite);
+    void collisionCheck();
     
 public:
     Player();

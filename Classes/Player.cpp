@@ -9,6 +9,7 @@
 
 #include "KeyMgr.h"
 
+#include "GameScene.h"
 #include "Coin.h"
 
 USING_NS_CC;
@@ -47,6 +48,8 @@ bool Player::init()
         return false;
     }
     
+    this->setName("Player");
+    
     pSprite_ = Sprite::create("white.png");
     pSprite_->setScale(0.2f);
     pSprite_->setColor(Color3B::RED);
@@ -54,14 +57,21 @@ bool Player::init()
     
     this->addChild(pSprite_);
     
-    this->scheduleUpdate();
-    
     return true;
 }
 
 void Player::update(float deltaTime)
 {
     move(deltaTime);
+    
+    collisionCheck();
+}
+
+void Player::onEnter()
+{
+    Node::onEnter();
+    
+    scheduleUpdate();
 }
 
 void Player::move(float deltaTime)
@@ -130,8 +140,29 @@ void Player::move(float deltaTime)
     }
 }
 
-void Player::collisionCheck(cocos2d::Sprite* pSprite)
+void Player::collisionCheck()
 {
-    //Rect playerRect = pSprite_->getBoundingBox();
-    //Rect pSprite->getBoundingBox();
+    Player* pPlayer = this;
+    if(nullptr == pPlayer)
+        return;
+    
+    GameScene* pGameScene = (GameScene*)Director::getInstance()->getRunningScene();
+    Layer* pCurStage = pGameScene->getCurStage();
+    
+    Vector<Node*> children = pCurStage->getChildren();
+    Rect playerRect = pPlayer->getSprite()->getBoundingBox();
+    
+    for(auto child : children)
+    {
+        if("Coin" == child->getName())
+        {
+            Rect coinRect = ((Coin*)child)->getSprite()->getBoundingBox();
+            
+            if(coinRect.intersectsRect(playerRect))
+              {
+                  ((Coin*)child)->collision();
+                  return;
+              }
+        }
+    }
 }

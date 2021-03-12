@@ -10,10 +10,9 @@
 #include "DataMgr.h"
 #include "KeyMgr.h"
 
+#include "GameScene.h"
 #include "Player.h"
-#include "Coin.h"
-
-#define MIN_RANGE 100
+#include "Stage2Layer.h"
 
 USING_NS_CC;
 
@@ -24,7 +23,6 @@ Stage1Layer::Stage1Layer()
 
 Stage1Layer::~Stage1Layer()
 {
-    
 }
 
 Stage1Layer* Stage1Layer::create()
@@ -45,16 +43,9 @@ Stage1Layer* Stage1Layer::create()
 
 bool Stage1Layer::init()
 {
-    if ( !LayerColor::initWithColor(Color4B::WHITE) )
-    {
+    if(false == StageLayer::init(Color4B::WHITE))
         return false;
-    }
     
-    pPlayer_ = Player::create();
-    this->addChild(pPlayer_);
-    
-    //scheduleUpdate();
-    makeCoin();
     return true;
 }
 
@@ -64,23 +55,11 @@ void Stage1Layer::update(float dt)
     {
         makeCoin();
     }
-}
-
-void Stage1Layer::makeCoin()
-{
-    Size visibleSize = Director::getInstance()->getVisibleSize();
-    
-    int maxX = visibleSize.width - MIN_RANGE;
-    int maxY = visibleSize.height - MIN_RANGE;
-    int rangeX = maxX - MIN_RANGE;
-    int rangeY = maxY - MIN_RANGE;
-    
-    for(int i=0; i<5; ++i)
+    else if(KeyMgr::getInstance()->getIsMove(KEY::KEY_P))
     {
-        Coin* pCoin = Coin::create();
-        pCoin->getSprite()->setPosition(Vec2((rand() % rangeX) + MIN_RANGE, (rand() % rangeY + MIN_RANGE)));
+        GameScene* scene = (GameScene*)Director::getInstance()->getRunningScene();
         
-        this->addChild(pCoin);
-        coinList_.emplace_back(pCoin);
+        scene->changeStage("Stage2");
     }
 }
+

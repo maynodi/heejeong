@@ -18,10 +18,13 @@ public:
     static Coin* create();
     
 public:
-    virtual bool init() override;    
-    
+    virtual bool init() override;
+
 public:
     cocos2d::Sprite* getSprite() { return pSprite_; }
+
+public:
+    void collision();
     
 public:
     Coin();

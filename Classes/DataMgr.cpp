@@ -36,7 +36,7 @@ void DataMgr::destroyInstance()
 {
     if(nullptr != pInstance_)
     {
-        delete pInstance_;
+        pInstance_->release();
         pInstance_ = nullptr;
     }
 }

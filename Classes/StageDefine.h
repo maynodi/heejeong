@@ -19,4 +19,11 @@ namespace stage
     {
         static const int COIN_MIN_RANGE = 100;
     }
+
+	namespace fileName
+	{
+		static const char* data_Stage1 = "data_stage1.json";
+		static const char* data_Stage2 = "data_stage2.json";
+	}
+
 }

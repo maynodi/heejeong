@@ -10,23 +10,30 @@
 #include "KeyMgr.h"
 #include "DataMgr.h"
 
+#include "StageDefine.h"
+#include "./json/rapidjson.h"
+#include "./json/document.h"
+#include "./json/writer.h"
+#include "./json/stringbuffer.h"
+
 #include "TitleScene.h"
 
 
 USING_NS_CC;
 
-bool StageLayer::init(const Color4B& color)
+bool StageLayer::init(const std::string stageName, const Color4B& color)
 {
     if(false == LayerColor::initWithColor(color))
         return false;
     
     this->setName("Stage");
     
-    pPlayer_ = Player::create();
+    pPlayer_ = Player::create(stageName);
     this->addChild(pPlayer_);
         
-    makeCoin();
-    
+	//
+	loadData(stageName);
+
     return true;
 }
 
@@ -52,8 +59,7 @@ void StageLayer::makeCoin()
         pCoin->getSprite()->setPosition(Vec2((rand() % rangeX) + stage::define::COIN_MIN_RANGE, (rand() % rangeY + stage::define::COIN_MIN_RANGE)));
 
         this->addChild(pCoin);
-    }
-    
+    }    
 }
 
 void StageLayer::keyCheck()
@@ -66,62 +72,53 @@ void StageLayer::keyCheck()
     {
         Director::getInstance()->replaceScene(TitleScene::create());
     }
-    else if(KeyMgr::getInstance()->getIsMove(KEY::KEY_1))
-    {
-        save();
-    }
 }
 
-void StageLayer::save()
+void StageLayer::loadData(const std::string stageName)
 {
-    char stageNum = {};
-    if(stage::name::Stage1 == this->getName())
-    {
-        stageNum = 0 + '0';
-    }
-    else if(stage::name::Stage2 == this->getName())
-    {
-       stageNum = 1 + '0';
-    }
-    
-    UserDefault* pUserDefault = UserDefault::getInstance();
-    
-    Vec2 playePos = pPlayer_->getPlayerPos();
-    
-    const char* X = {};
-    const char* Y = {};
-    
-    X = "playerX";
-    Y = "playerY";
-    char* playerX = std::strcat(&stageNum, X);
-    char* playerY = std::strcat(&stageNum, Y);
-    
-    pUserDefault->setFloatForKey(playerX, playePos.x);
-    pUserDefault->setFloatForKey(playerY, playePos.y);
-    
-    
-    Vector<Node*> children = this->getChildren();
-    
-    int cntInt = 0;
-    for(auto child : children)
-    {
-        if("Coin" == child->getName())
-        {
-            
-            char cnt = cntInt + '0';
-            X = "coinX";
-            Y = "coinY";
-            char* coinX = std::strcat(&cnt, X);
-            char* coinY = std::strcat(&cnt, Y);
-            
-            Vec2 coinPos = ((Coin*)child)->getCoinPos();
-            pUserDefault->setFloatForKey(coinX, coinPos.x);
-            pUserDefault->setFloatForKey(coinY, coinPos.y);
-            
-            ++cntInt;
-        }
-    }
-    
-    pUserDefault->setIntegerForKey("score", DataMgr::getInstance()->getScore());
-    pUserDefault->flush();
+	std::string fileName = {};
+	if (stage::name::Stage1 == stageName)
+	{
+		fileName = stage::fileName::data_Stage1;
+	}
+	else if (stage::name::Stage2 == stageName)
+	{
+		fileName = stage::fileName::data_Stage2;
+	}
+
+	std::string filePath = FileUtils::getInstance()->getWritablePath() + fileName;
+
+	ssize_t bufSize = 0;
+	const char* fileData = (const char*)(FileUtils::getInstance()->getFileData(filePath.c_str(), "rt", &bufSize));
+	if (nullptr == fileData)
+	{
+		//파일이 없을 때
+		makeCoin();
+		return;
+	}
+
+
+	std::string clearData(fileData);
+	size_t end = clearData.rfind("}");
+	clearData = clearData.substr(0, end + 1);
+
+	rapidjson::Document doc;
+	doc.Parse<0>(clearData.c_str());
+	if (doc.HasParseError())
+	{
+		return;
+	}
+
+	rapidjson::Value& arr = doc["coinX"];
+	for (rapidjson::SizeType i = 0; i < arr.Size(); ++i)
+	{
+		Coin* pCoin = Coin::create();
+
+		float posX = arr[i].GetFloat();
+		float posY = doc["coinY"][i].GetFloat();
+
+		pCoin->getSprite()->setPosition(Vec2(posX, posY));
+		this->addChild(pCoin);
+	}
+
 }

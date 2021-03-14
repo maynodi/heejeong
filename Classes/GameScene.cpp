@@ -4,6 +4,12 @@
 #include "KeyMgr.h"
 #include "DataMgr.h"
 
+#include "StageDefine.h"
+#include "./json/rapidjson.h"
+#include "./json/document.h"
+#include "./json/writer.h"
+#include "./json/stringbuffer.h"
+
 #include "Stage1Layer.h"
 #include "Stage2Layer.h"
 #include "StageLayer.h"
@@ -11,13 +17,7 @@
 #include "Player.h"
 #include "Coin.h"
 
-#include "StageDefine.h"
 
-#include "./json/rapidjson.h"
-#include "./json/document.h"
-#include "./json/writer.h"
-#include "./json/stringbuffer.h"
-#include "./json/prettywriter.h"
 
 USING_NS_CC;
 
@@ -51,7 +51,7 @@ GameScene* GameScene::create()
 
 bool GameScene::init()
 {
-    if ( !Scene::init() )
+    if ( false == Scene::init() )
     {
         return false;
     }
@@ -60,14 +60,15 @@ bool GameScene::init()
     addStage(stage::name::Stage2, Stage2Layer::create());
     
     changeStage(stage::name::Stage1);
+
     
     KeyMgr* pKeyMgr = KeyMgr::getInstance();
     this->addChild(pKeyMgr);
     
     Layer* pUI = UILayer::create();
     pUI->setLocalZOrder(99);
-    this->addChild(pUI);
-    
+    this->addChild(pUI);    
+	
     return true;
 }
 
@@ -98,56 +99,70 @@ void GameScene::addStage(std::string key, Layer* pLayer)
 }
 
 void GameScene::save()
-{	
-	Player* pPlayer = ((StageLayer*)mapStage_[stage::name::Stage1])->getPlayer();
-	float fX = (pPlayer->getSprite())->getPosition().x;
-	float fY = (pPlayer->getSprite())->getPosition().y;
-
-	const char* json = "{\"playerX\":0,\"playerY\":0,\"coinX\":[0],\"coinY\":[0]}";
-	rapidjson::Document doc;
-	doc.Parse(json);
-
-	rapidjson::Value& val1 = doc["playerX"];
-	val1.SetFloat(fX);
-
-	rapidjson::Value& val2 = doc["playerY"];
-	val2.SetFloat(fY);
-
-	Vector<Node*> childrenVector = mapStage_[stage::name::Stage1]->getChildren();
-	int size = childrenVector.size();
-
-	rapidjson::Value& val3 = doc["coinX"];
-	rapidjson::Value& val4 = doc["coinY"];
-	
-	rapidjson::Document::AllocatorType& allocator = doc.GetAllocator();
-
-	int cnt = 0;
-	for (auto child : childrenVector)
+{
+	for (auto& stage : mapStage_)
 	{
-		if ("Coin" == child->getName())
+		Player* pPlayer = ((StageLayer*)mapStage_[stage.first])->getPlayer();
+		float fX = (pPlayer->getSprite())->getPosition().x;
+		float fY = (pPlayer->getSprite())->getPosition().y;
+
+		const char* json = "{\"playerX\":0,\"playerY\":0,\n\"coinX\":[],\n\"coinY\":[],\n\"score\":0}";
+		rapidjson::Document doc;
+		doc.Parse(json);
+
+		//player
+		rapidjson::Value& val1 = doc["playerX"];
+		val1.SetFloat(fX);
+
+		rapidjson::Value& val2 = doc["playerY"];
+		val2.SetFloat(fY);
+
+		//coin
+		Vector<Node*> childrenVector = mapStage_[stage.first]->getChildren();
+		int size = childrenVector.size();
+
+		rapidjson::Value& val3 = doc["coinX"];
+		rapidjson::Value& val4 = doc["coinY"];
+
+		rapidjson::Document::AllocatorType& allocator = doc.GetAllocator();
+		int cnt = 0;
+		for (auto child : childrenVector)
 		{
-			float coinX = (((Coin*)child)->getSprite())->getPosition().x;
-			float coinY = (((Coin*)child)->getSprite())->getPosition().y;
+			if ("Coin" == child->getName())
+			{
+				float coinX = (((Coin*)child)->getSprite())->getPosition().x;
+				float coinY = (((Coin*)child)->getSprite())->getPosition().y;
 
-			val3.PushBack(coinX, allocator);
-			val4.PushBack(coinY,allocator);
+				val3.PushBack(coinX, allocator);
+				val4.PushBack(coinY, allocator);
 
-			++cnt;			
+				++cnt;
+			}
 		}
-	}
-	int itest = 0;
-	
-	
-	rapidjson::StringBuffer buf;
-	rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
-	doc.Accept(writer);
-	
-	FILE* pfile = nullptr;
 
-	std::string fileName = FileUtils::getInstance()->getWritablePath();
-	fileName += "data.json";
+		//score
+		rapidjson::Value& val5 = doc["score"];
+		val5.SetInt(DataMgr::getInstance()->getScore());
 
-	fopen_s(&pfile, fileName.c_str(), "wt");
-	fwrite(buf.GetString(), buf.GetSize(), 1, pfile);
-	fclose(pfile);
+		//
+		rapidjson::StringBuffer buf;
+		rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
+		doc.Accept(writer);
+
+		FILE* pfile = nullptr;
+
+		std::string filePath = FileUtils::getInstance()->getWritablePath();
+		if (stage::name::Stage1 == stage.first)
+		{
+			filePath += stage::fileName::data_Stage1;
+		}
+		if (stage::name::Stage2 == stage.first)
+		{
+			filePath += stage::fileName::data_Stage2;
+		}
+
+		fopen_s(&pfile, filePath.c_str(), "wt");
+		fwrite(buf.GetString(), buf.GetSize(), 1, pfile);
+		fclose(pfile);
+	}	
 }

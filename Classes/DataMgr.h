@@ -31,6 +31,10 @@ public:
     int getScore() { return score_; }
     
 private:
+	void loadData();
+
+
+private:
     DataMgr();
     ~DataMgr();
 };

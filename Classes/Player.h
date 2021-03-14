@@ -16,10 +16,10 @@ private:
     cocos2d::Vec2 originPos_;
     
 public:
-    static Player* create();
+    static Player* create(const std::string stageName);
     
 public:
-    virtual bool init() override;
+    bool init(const std::string stageName);
     
 public:
     cocos2d::Sprite* getSprite() { return pSprite_; }
@@ -32,6 +32,8 @@ public:
 private:
     void move(float deltaTime);
     void collisionCheck();
+	void loadData(const std::string stageName);
+
     
 public:
     Player();

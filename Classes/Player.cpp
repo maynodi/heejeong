@@ -9,13 +9,16 @@
 
 #include "KeyMgr.h"
 
-#include "GameScene.h"
-#include "Coin.h"
-
+#include "StageDefine.h"
 #include "./json/rapidjson.h"
 #include "./json/document.h"
 #include "./json/writer.h"
 #include "./json/stringbuffer.h"
+
+#include "GameScene.h"
+#include "Coin.h"
+
+
 
 USING_NS_CC;
 
@@ -30,10 +33,10 @@ Player::~Player()
 {
 }
 
-Player* Player::create()
+Player* Player::create(const std::string stageName)
 {
     Player* pRet = new(std::nothrow) Player;
-    if (pRet && pRet->init())
+    if (pRet && pRet->init(stageName))
     {
         pRet->autorelease();
         return pRet;
@@ -46,9 +49,9 @@ Player* Player::create()
     }
 }
 
-bool Player::init()
+bool Player::init(const std::string stageName)
 {
-    if ( !Node::init() )
+    if ( false == Node::init() )
     {
         return false;
     }
@@ -57,37 +60,10 @@ bool Player::init()
     
     pSprite_ = Sprite::create("white.png");
     pSprite_->setScale(0.2f);
-    pSprite_->setColor(Color3B::RED);
-    //pSprite_->setPosition(originPos_);
-    
+    pSprite_->setColor(Color3B::RED); 
 
-	rapidjson::Value playerPos;
-	std::string fileName = FileUtils::getInstance()->getWritablePath() + "data.json";
+	loadData(stageName);
 
-	ssize_t bufSize = 0;
-	const char* fileData = (const char*)(FileUtils::getInstance()->getFileData(fileName.c_str(),"rt", &bufSize));
-
-	std::string clearData(fileData);
-	size_t end = clearData.rfind("}");
-	clearData = clearData.substr(0, end+1);
-
-	rapidjson::Document doc;
-	doc.Parse<0>(clearData.c_str());
-	if (doc.HasParseError())
-	{
-		return false;
-	}
-
-	rapidjson::Value& val1 = doc["playerX"];
-	rapidjson::Value& val2 = doc["playerY"];
-
-	float posX = val1.GetFloat();
-	float posY = val2.GetFloat();
-
-	pSprite_->setPosition(Vec2(posX, posY));
-
-    this->addChild(pSprite_);
-    
     return true;
 }
 
@@ -196,4 +172,51 @@ void Player::collisionCheck()
               }
         }
     }
+}
+
+void Player::loadData(const std::string stageName)
+{
+	std::string fileName = {};
+	if (stage::name::Stage1 == stageName)
+	{
+		fileName = stage::fileName::data_Stage1;
+	}
+	else if (stage::name::Stage2 == stageName)
+	{
+		fileName = stage::fileName::data_Stage2;
+	}
+
+	std::string filePath = FileUtils::getInstance()->getWritablePath() + fileName;
+
+	ssize_t bufSize = 0;
+	const char* fileData = (const char*)(FileUtils::getInstance()->getFileData(filePath.c_str(), "rt", &bufSize));
+	if (nullptr == fileData)
+	{
+		//파일이 없을 때
+		pSprite_->setPosition(originPos_);
+		this->addChild(pSprite_);
+		return;
+	}
+
+
+	std::string clearData(fileData);
+	size_t end = clearData.rfind("}");
+	clearData = clearData.substr(0, end + 1);
+
+	rapidjson::Document doc;
+	doc.Parse<0>(clearData.c_str());
+	if (doc.HasParseError())
+	{
+		return;
+	}
+
+	rapidjson::Value& val1 = doc["playerX"];
+	rapidjson::Value& val2 = doc["playerY"];
+
+	float posX = val1.GetFloat();
+	float posY = val2.GetFloat();
+
+	pSprite_->setPosition(Vec2(posX, posY));
+
+	this->addChild(pSprite_);
 }

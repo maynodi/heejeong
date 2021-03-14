@@ -20,7 +20,7 @@ private:
     Player* pPlayer_;
     
 public:
-    bool init(const cocos2d::Color4B& color);
+    bool init(const std::string stageName, const cocos2d::Color4B& color);
     virtual void onEnter() override;
     
 public:
@@ -28,7 +28,7 @@ public:
     
 public:
     void makeCoin();
-    virtual void keyCheck();
-    void save();
-    
+    virtual void keyCheck();    
+	void loadData(const std::string stageName);
+
 };

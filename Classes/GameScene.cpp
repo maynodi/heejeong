@@ -12,7 +12,12 @@
 #include "Coin.h"
 
 #include "StageDefine.h"
-//#include "../cocos2d/external/json/rapidjson.h"
+
+#include "./json/rapidjson.h"
+#include "./json/document.h"
+#include "./json/writer.h"
+#include "./json/stringbuffer.h"
+#include "./json/prettywriter.h"
 
 USING_NS_CC;
 
@@ -23,6 +28,7 @@ GameScene::GameScene()
 
 GameScene::~GameScene()
 {
+	save();
     KeyMgr::destroyInstance();
     DataMgr::destroyInstance();
 }
@@ -92,68 +98,56 @@ void GameScene::addStage(std::string key, Layer* pLayer)
 }
 
 void GameScene::save()
-{
-    UserDefault* pUserDefault = UserDefault::getInstance();
+{	
+	Player* pPlayer = ((StageLayer*)mapStage_[stage::name::Stage1])->getPlayer();
+	float fX = (pPlayer->getSprite())->getPosition().x;
+	float fY = (pPlayer->getSprite())->getPosition().y;
 
-    int stageNumInt = 0;
+	const char* json = "{\"playerX\":0,\"playerY\":0,\"coinX\":[0],\"coinY\":[0]}";
+	rapidjson::Document doc;
+	doc.Parse(json);
 
-    const char* X = {};
-    const char* Y = {};
-    for(auto map : mapStage_)
-    {
-        Vec2 playePos = static_cast<StageLayer*>(map.second)->getPlayer()->getPlayerPos();
+	rapidjson::Value& val1 = doc["playerX"];
+	val1.SetFloat(fX);
 
-        char stageNum = stageNumInt + '0';
-        X = "playerX";
-        Y = "playerY";
-        char* playerX = std::strcat(&stageNum, X);
-        char* playerY = std::strcat(&stageNum, Y);
+	rapidjson::Value& val2 = doc["playerY"];
+	val2.SetFloat(fY);
 
-        pUserDefault->setFloatForKey(playerX, playePos.x);
-        pUserDefault->setFloatForKey(playerY, playePos.y);
+	Vector<Node*> childrenVector = mapStage_[stage::name::Stage1]->getChildren();
+	int size = childrenVector.size();
 
+	rapidjson::Value& val3 = doc["coinX"];
+	rapidjson::Value& val4 = doc["coinY"];
+	
+	rapidjson::Document::AllocatorType& allocator = doc.GetAllocator();
 
-        Vector<Node*> children = static_cast<StageLayer*>(map.second)->getChildren();
+	int cnt = 0;
+	for (auto child : childrenVector)
+	{
+		if ("Coin" == child->getName())
+		{
+			float coinX = (((Coin*)child)->getSprite())->getPosition().x;
+			float coinY = (((Coin*)child)->getSprite())->getPosition().y;
 
-        int cntInt = 0;
-        for(auto child : children)
-        {
-            if("Coin" == child->getName())
-            {
-                char cnt = cntInt + '0';
-                X = "coinX";
-                Y = "coinY";
-                char* coinX = std::strcat(&cnt, X);
-                char* coinY = std::strcat(&cnt, Y);
+			val3.PushBack(coinX, allocator);
+			val4.PushBack(coinY,allocator);
 
-                Vec2 coinPos = ((Coin*)child)->getCoinPos();
-                pUserDefault->setFloatForKey(coinX, coinPos.x);
-                pUserDefault->setFloatForKey(coinY, coinPos.y);
+			++cnt;			
+		}
+	}
+	int itest = 0;
+	
+	
+	rapidjson::StringBuffer buf;
+	rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
+	doc.Accept(writer);
+	
+	FILE* pfile = nullptr;
 
-                ++cntInt;
-            }
-        }
+	std::string fileName = FileUtils::getInstance()->getWritablePath();
+	fileName += "data.json";
 
-        ++stageNumInt;
-    }
-
-    pUserDefault->setIntegerForKey("score", DataMgr::getInstance()->getScore());
-
-    pUserDefault->flush();
-    
-    
-    
-    
-    
-    
-
-    std::string path = FileUtils::getInstance()->getWritablePath() + "test.txt";
-    FILE* fp = fopen(path.c_str(), "wt");
-
-    if(nullptr != fp)
-    {
-        int data = 200;
-        fwrite((void*)&data, sizeof(int), 1, fp);
-        fclose(fp);
-    }
+	fopen_s(&pfile, fileName.c_str(), "wt");
+	fwrite(buf.GetString(), buf.GetSize(), 1, pfile);
+	fclose(pfile);
 }

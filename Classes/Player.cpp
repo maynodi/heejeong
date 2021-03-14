@@ -12,6 +12,11 @@
 #include "GameScene.h"
 #include "Coin.h"
 
+#include "./json/rapidjson.h"
+#include "./json/document.h"
+#include "./json/writer.h"
+#include "./json/stringbuffer.h"
+
 USING_NS_CC;
 
 Player::Player()
@@ -47,14 +52,40 @@ bool Player::init()
     {
         return false;
     }
-    
+
     this->setName("Player");
     
     pSprite_ = Sprite::create("white.png");
     pSprite_->setScale(0.2f);
     pSprite_->setColor(Color3B::RED);
-    pSprite_->setPosition(originPos_);
+    //pSprite_->setPosition(originPos_);
     
+
+	rapidjson::Value playerPos;
+	std::string fileName = FileUtils::getInstance()->getWritablePath() + "data.json";
+
+	ssize_t bufSize = 0;
+	const char* fileData = (const char*)(FileUtils::getInstance()->getFileData(fileName.c_str(),"rt", &bufSize));
+
+	std::string clearData(fileData);
+	size_t end = clearData.rfind("}");
+	clearData = clearData.substr(0, end+1);
+
+	rapidjson::Document doc;
+	doc.Parse<0>(clearData.c_str());
+	if (doc.HasParseError())
+	{
+		return false;
+	}
+
+	rapidjson::Value& val1 = doc["playerX"];
+	rapidjson::Value& val2 = doc["playerY"];
+
+	float posX = val1.GetFloat();
+	float posY = val2.GetFloat();
+
+	pSprite_->setPosition(Vec2(posX, posY));
+
     this->addChild(pSprite_);
     
     return true;

@@ -9,15 +9,16 @@
 
 #include "cocos2d.h"
 
+#include "StageDefine.h"
 #include "StageLayer.h"
 
 class Stage1Layer : public StageLayer
 {
 public:
-    static Stage1Layer* create();
+    static Stage1Layer* create(menu::PLAY ePlay);
     
 public:
-    virtual bool init() override;
+    bool init(menu::PLAY ePlay);
     virtual void update(float dt) override;
     
 private:

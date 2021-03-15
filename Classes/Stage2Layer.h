@@ -15,10 +15,10 @@
 class Stage2Layer : public StageLayer
 {    
 public:
-    static Stage2Layer* create();
+    static Stage2Layer* create(menu::PLAY ePlay);
     
 public:
-    virtual bool init() override;
+    bool init(menu::PLAY ePlay);
     virtual void update(float dt) override;
     
 private:

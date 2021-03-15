@@ -123,6 +123,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
     // run
     director->runWithScene(scene);
 
+    std::string filePath = FileUtils::getInstance()->getWritablePath();
+    CCLOG(filePath.c_str());
+    
     return true;
 }
 

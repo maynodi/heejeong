@@ -25,5 +25,9 @@ namespace stage
 		static const char* data_Stage1 = "data_stage1.json";
 		static const char* data_Stage2 = "data_stage2.json";
 	}
+}
 
+namespace menu
+{
+    enum PLAY {NEW, LOAD};
 }

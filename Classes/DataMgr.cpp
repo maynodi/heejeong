@@ -13,6 +13,8 @@
 #include "./json/writer.h"
 #include "./json/stringbuffer.h"
 
+#include "GameScene.h"
+
 USING_NS_CC;
 
 DataMgr* DataMgr::pInstance_ = nullptr;
@@ -49,7 +51,17 @@ void DataMgr::destroyInstance()
 
 bool DataMgr::init()
 {
-	loadData();
+    GameScene* pScene = (GameScene*)Director::getInstance()->getRunningScene();
+    menu::PLAY ePlay = pScene->getPlayState();
+    
+    if(menu::PLAY::NEW == ePlay)
+    {
+        score_ = 0;
+    }
+    else if(menu::PLAY::LOAD == ePlay)
+    {
+        loadData();
+    }
 
     return true;
 }
@@ -57,15 +69,8 @@ bool DataMgr::init()
 void DataMgr::loadData()
 {
 	std::string filePath = FileUtils::getInstance()->getWritablePath() + stage::fileName::data_Stage2;
-
-	ssize_t bufSize = 0;
-	const char* fileData = (const char*)(FileUtils::getInstance()->getFileData(filePath.c_str(), "rt", &bufSize));
-	if (nullptr == fileData)
-	{
-		//파일이 없을 때
-		score_ = 0;
-		return;
-	}
+    
+    std::string fileData = FileUtils::getInstance()->getStringFromFile(filePath.c_str());
 
 	std::string clearData(fileData);
 	size_t end = clearData.rfind("}");

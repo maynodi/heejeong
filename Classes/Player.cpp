@@ -9,12 +9,12 @@
 
 #include "KeyMgr.h"
 
-#include "StageDefine.h"
 #include "./json/rapidjson.h"
 #include "./json/document.h"
 #include "./json/writer.h"
 #include "./json/stringbuffer.h"
 
+#include "StageLayer.h"
 #include "GameScene.h"
 #include "Coin.h"
 
@@ -33,10 +33,10 @@ Player::~Player()
 {
 }
 
-Player* Player::create(const std::string stageName)
+Player* Player::create(menu::PLAY ePlay, const std::string stageName)
 {
     Player* pRet = new(std::nothrow) Player;
-    if (pRet && pRet->init(stageName))
+    if (pRet && pRet->init(ePlay, stageName))
     {
         pRet->autorelease();
         return pRet;
@@ -49,7 +49,7 @@ Player* Player::create(const std::string stageName)
     }
 }
 
-bool Player::init(const std::string stageName)
+bool Player::init(menu::PLAY ePlay, const std::string stageName)
 {
     if ( false == Node::init() )
     {
@@ -62,7 +62,15 @@ bool Player::init(const std::string stageName)
     pSprite_->setScale(0.2f);
     pSprite_->setColor(Color3B::RED); 
 
-	loadData(stageName);
+    if(menu::PLAY::NEW == ePlay)
+    {
+        pSprite_->setPosition(originPos_);
+        this->addChild(pSprite_);
+    }
+    else if(menu::PLAY::LOAD == ePlay)
+    {
+        loadData(stageName);
+    }
 
     return true;
 }
@@ -154,7 +162,7 @@ void Player::collisionCheck()
         return;
     
     GameScene* pGameScene = (GameScene*)Director::getInstance()->getRunningScene();
-    Layer* pCurStage = pGameScene->getCurStage();
+    StageLayer* pCurStage = pGameScene->getCurStage();
     
     Vector<Node*> children = pCurStage->getChildren();
     Rect playerRect = pPlayer->getSprite()->getBoundingBox();
@@ -174,6 +182,11 @@ void Player::collisionCheck()
     }
 }
 
+void Player::save()
+{
+    
+}
+
 void Player::loadData(const std::string stageName)
 {
 	std::string fileName = {};
@@ -188,16 +201,7 @@ void Player::loadData(const std::string stageName)
 
 	std::string filePath = FileUtils::getInstance()->getWritablePath() + fileName;
 
-	ssize_t bufSize = 0;
-	const char* fileData = (const char*)(FileUtils::getInstance()->getFileData(filePath.c_str(), "rt", &bufSize));
-	if (nullptr == fileData)
-	{
-		//파일이 없을 때
-		pSprite_->setPosition(originPos_);
-		this->addChild(pSprite_);
-		return;
-	}
-
+    std::string fileData = FileUtils::getInstance()->getStringFromFile(filePath.c_str());
 
 	std::string clearData(fileData);
 	size_t end = clearData.rfind("}");

@@ -29,6 +29,8 @@
 		46880B8219C43A67006E1F66 /* HelloWorld.png in Resources */ = {isa = PBXBuildFile; fileRef = 46880B7A19C43A67006E1F66 /* HelloWorld.png */; };
 		46880B8819C43A87006E1F66 /* AppDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46880B8419C43A87006E1F66 /* AppDelegate.cpp */; };
 		46880B8919C43A87006E1F66 /* AppDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46880B8419C43A87006E1F66 /* AppDelegate.cpp */; };
+		50176CC725FF00DA00991CAF /* MyObjectNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50176CC625FF00DA00991CAF /* MyObjectNode.cpp */; };
+		50176CC825FF00DA00991CAF /* MyObjectNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50176CC625FF00DA00991CAF /* MyObjectNode.cpp */; };
 		5030955B25FB178600AC41B9 /* StageLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5030955A25FB178600AC41B9 /* StageLayer.cpp */; };
 		5030955C25FB178600AC41B9 /* StageLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5030955A25FB178600AC41B9 /* StageLayer.cpp */; };
 		503AE0F817EB97AB00D1A890 /* Icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 503AE0F617EB97AB00D1A890 /* Icon.icns */; };
@@ -143,6 +145,8 @@
 		46880B7A19C43A67006E1F66 /* HelloWorld.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = HelloWorld.png; sourceTree = "<group>"; };
 		46880B8419C43A87006E1F66 /* AppDelegate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AppDelegate.cpp; sourceTree = "<group>"; };
 		46880B8519C43A87006E1F66 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		50176CC525FF00DA00991CAF /* MyObjectNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyObjectNode.h; sourceTree = "<group>"; };
+		50176CC625FF00DA00991CAF /* MyObjectNode.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MyObjectNode.cpp; sourceTree = "<group>"; };
 		5030955925FB178600AC41B9 /* StageLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StageLayer.h; sourceTree = "<group>"; };
 		5030955A25FB178600AC41B9 /* StageLayer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = StageLayer.cpp; sourceTree = "<group>"; };
 		5030955E25FB1AE900AC41B9 /* StageDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StageDefine.h; sourceTree = "<group>"; };
@@ -355,6 +359,8 @@
 				50E46BF825FA045A00919209 /* DataMgr.cpp */,
 				50E46BF725FA045A00919209 /* DataMgr.h */,
 				5030955E25FB1AE900AC41B9 /* StageDefine.h */,
+				50176CC525FF00DA00991CAF /* MyObjectNode.h */,
+				50176CC625FF00DA00991CAF /* MyObjectNode.cpp */,
 			);
 			name = Classes;
 			path = ../Classes;
@@ -521,6 +527,7 @@
 				1AF87B8B1F6F782A007BE51C /* RootViewController.mm in Sources */,
 				5030955B25FB178600AC41B9 /* StageLayer.cpp in Sources */,
 				50E46BF925FA045A00919209 /* DataMgr.cpp in Sources */,
+				50176CC725FF00DA00991CAF /* MyObjectNode.cpp in Sources */,
 				50E46BFD25FA113500919209 /* Stage2Layer.cpp in Sources */,
 				50E46BE625F9BBCA00919209 /* Player.cpp in Sources */,
 				50E46BE225F9B9D600919209 /* Stage1Layer.cpp in Sources */,
@@ -547,6 +554,7 @@
 				46880B8919C43A87006E1F66 /* AppDelegate.cpp in Sources */,
 				5030955C25FB178600AC41B9 /* StageLayer.cpp in Sources */,
 				50E46BE325F9B9D600919209 /* Stage1Layer.cpp in Sources */,
+				50176CC825FF00DA00991CAF /* MyObjectNode.cpp in Sources */,
 				50E46BFA25FA045A00919209 /* DataMgr.cpp in Sources */,
 				503AE10517EB98FF00D1A890 /* main.cpp in Sources */,
 				50E46BD825F9AD0400919209 /* GameScene.cpp in Sources */,

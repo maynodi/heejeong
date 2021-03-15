@@ -21,19 +21,45 @@
 
 USING_NS_CC;
 
-bool StageLayer::init(const std::string stageName, const Color4B& color)
+StageLayer::StageLayer(std::string stageName)
+    : curStageName_(stageName)
+{
+    
+}
+
+StageLayer::~StageLayer()
+{
+    
+}
+
+bool StageLayer::init(menu::PLAY ePlay, const std::string stageName, const Color4B& color)
 {
     if(false == LayerColor::initWithColor(color))
         return false;
     
     this->setName("Stage");
     
-    pPlayer_ = Player::create(stageName);
+    pPlayer_ = Player::create(ePlay, stageName);
     this->addChild(pPlayer_);
+    
+    if(menu::PLAY::NEW == ePlay)
+    {
+        makeCoin();
+    }
+    else if(menu::PLAY::LOAD == ePlay)
+    {
+        loadData(stageName);
+    }
+    
+    for(auto child : this->getChildren())
+    {
+        MyObjectNode* pNode = dynamic_cast<MyObjectNode*>(child);
+        if(nullptr == pNode)
+            continue;
         
-	//
-	loadData(stageName);
-
+        myObjects_.push_back(pNode);
+    }
+    
     return true;
 }
 
@@ -59,7 +85,7 @@ void StageLayer::makeCoin()
         pCoin->getSprite()->setPosition(Vec2((rand() % rangeX) + stage::define::COIN_MIN_RANGE, (rand() % rangeY + stage::define::COIN_MIN_RANGE)));
 
         this->addChild(pCoin);
-    }    
+    }
 }
 
 void StageLayer::keyCheck()
@@ -71,6 +97,14 @@ void StageLayer::keyCheck()
     else if(KeyMgr::getInstance()->getIsMove(KEY::KEY_ESCAPE))
     {
         Director::getInstance()->replaceScene(TitleScene::create());
+    }
+}
+
+void StageLayer::save()
+{
+    for(auto pObject : myObjects_)
+    {
+        pObject->save();
     }
 }
 
@@ -87,16 +121,8 @@ void StageLayer::loadData(const std::string stageName)
 	}
 
 	std::string filePath = FileUtils::getInstance()->getWritablePath() + fileName;
-
-	ssize_t bufSize = 0;
-	const char* fileData = (const char*)(FileUtils::getInstance()->getFileData(filePath.c_str(), "rt", &bufSize));
-	if (nullptr == fileData)
-	{
-		//파일이 없을 때
-		makeCoin();
-		return;
-	}
-
+    
+    std::string fileData = FileUtils::getInstance()->getStringFromFile(filePath.c_str());
 
 	std::string clearData(fileData);
 	size_t end = clearData.rfind("}");
@@ -120,5 +146,6 @@ void StageLayer::loadData(const std::string stageName)
 		pCoin->getSprite()->setPosition(Vec2(posX, posY));
 		this->addChild(pCoin);
 	}
-
+    
+    curStageName_ = stageName;
 }

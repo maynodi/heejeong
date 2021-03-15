@@ -18,17 +18,26 @@ class StageLayer : public cocos2d::LayerColor
 {
 private:
     Player* pPlayer_;
+    std::vector<MyObjectNode*> myObjects_;
+    
+    std::string curStageName_;
     
 public:
-    bool init(const std::string stageName, const cocos2d::Color4B& color);
+    bool init(menu::PLAY ePlay, const std::string stageName, const cocos2d::Color4B& color);
     virtual void onEnter() override;
     
 public:
     Player* getPlayer() { return pPlayer_; }
-    
+    std::string getStageName() { return curStageName_; }
 public:
     void makeCoin();
-    virtual void keyCheck();    
+    virtual void keyCheck();
+    
+public:
+    void save();
 	void loadData(const std::string stageName);
 
+protected:
+    StageLayer(std::string stageName);
+    ~StageLayer();
 };

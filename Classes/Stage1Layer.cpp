@@ -14,6 +14,7 @@
 USING_NS_CC;
 
 Stage1Layer::Stage1Layer()
+    : StageLayer(stage::name::Stage1)
 {
 }
 
@@ -21,10 +22,10 @@ Stage1Layer::~Stage1Layer()
 {
 }
 
-Stage1Layer* Stage1Layer::create()
+Stage1Layer* Stage1Layer::create(menu::PLAY ePlay)
 {
     Stage1Layer* pRet = new(std::nothrow) Stage1Layer;
-    if (pRet && pRet->init())
+    if (pRet && pRet->init(ePlay))
     {
         pRet->autorelease();
         return pRet;
@@ -37,9 +38,9 @@ Stage1Layer* Stage1Layer::create()
     }
 }
 
-bool Stage1Layer::init()
+bool Stage1Layer::init(menu::PLAY ePlay)
 {
-    if(false == StageLayer::init(Color4B::WHITE))
+    if(false == StageLayer::init(ePlay, stage::name::Stage1, Color4B::WHITE))
         return false;
     
     return true;

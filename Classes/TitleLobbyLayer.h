@@ -21,7 +21,8 @@ public:
     virtual bool init() override;
     
 private:
-    void playMenuClick(Ref* pSender);
+    void newPlayMenuClick(Ref* pSender);
+    void loadPlayMenuClick(Ref* pSender);
     void loadMenuClick(Ref* pSender);
     void toolMenuClick(Ref* pSender);
     

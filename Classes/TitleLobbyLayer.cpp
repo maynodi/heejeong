@@ -8,6 +8,8 @@
 #include "TitleLobbyLayer.h"
 #include "GameScene.h"
 
+#include "StageDefine.h"
+
 #define FONTPATH "fonts/arial.ttf"
 
 USING_NS_CC;
@@ -59,32 +61,38 @@ bool TitleLobbyLayer::init()
     gameTitleLabel->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height - 100));
     this->addChild(gameTitleLabel);
     
-    Label* playLabel = Label::createWithTTF("Game Play", FONTPATH, menuFontSize_);
-    Label* loadLabel = Label::createWithTTF("Game Load", FONTPATH, menuFontSize_);
+    Label* newPlayLabel = Label::createWithTTF("New Play", FONTPATH, menuFontSize_);
+    Label* loadPlayLabel = Label::createWithTTF("Load Play", FONTPATH, menuFontSize_);
+    Label* loadLabel = Label::createWithTTF("---------", FONTPATH, menuFontSize_);
     Label* toolLabel = Label::createWithTTF("Game Tool", FONTPATH, menuFontSize_);
     
-    MenuItemLabel* playMenuItem = MenuItemLabel::create(playLabel, CC_CALLBACK_1(TitleLobbyLayer::playMenuClick,this));
+    MenuItemLabel* newPlayMenuItem = MenuItemLabel::create(newPlayLabel, CC_CALLBACK_1(TitleLobbyLayer::newPlayMenuClick,this));
+    MenuItemLabel* loadPlayMenuItem = MenuItemLabel::create(loadPlayLabel, CC_CALLBACK_1(TitleLobbyLayer::loadPlayMenuClick,this));
     MenuItemLabel* loadMenuItem = MenuItemLabel::create(loadLabel, CC_CALLBACK_1(TitleLobbyLayer::loadMenuClick,this));
     MenuItemLabel* toolMenuItem = MenuItemLabel::create(toolLabel, CC_CALLBACK_1(TitleLobbyLayer::toolMenuClick,this));
     
-    Menu* menu = Menu::create(playMenuItem, loadMenuItem, toolMenuItem, NULL);
+    Menu* menu = Menu::create(newPlayMenuItem, loadPlayMenuItem, loadMenuItem, toolMenuItem, NULL);
     menu->alignItemsVertically();
     this->addChild(menu);
     return true;
 }
 
-void TitleLobbyLayer::playMenuClick(Ref* pSender)
+void TitleLobbyLayer::newPlayMenuClick(Ref* pSender)
 {
-    Scene* pScene = GameScene::create();
+    Scene* pScene = GameScene::create(menu::PLAY::NEW);    
+    Director::getInstance()->replaceScene(pScene);
+}
+
+void TitleLobbyLayer::loadPlayMenuClick(Ref* pSender)
+{
+    Scene* pScene = GameScene::create(menu::PLAY::LOAD);
     Director::getInstance()->replaceScene(pScene);
 }
 
 void TitleLobbyLayer::loadMenuClick(Ref* pSender)
 {
-    
 }
 
 void TitleLobbyLayer::toolMenuClick(Ref* pSender)
 {
-    
 }

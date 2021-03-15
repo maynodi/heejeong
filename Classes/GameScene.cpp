@@ -4,7 +4,7 @@
 #include "KeyMgr.h"
 #include "DataMgr.h"
 
-#include "StageDefine.h"
+#include <stdio.h>
 #include "./json/rapidjson.h"
 #include "./json/document.h"
 #include "./json/writer.h"
@@ -33,10 +33,10 @@ GameScene::~GameScene()
     DataMgr::destroyInstance();
 }
 
-GameScene* GameScene::create()
+GameScene* GameScene::create(menu::PLAY ePlay)
 {
     GameScene* pRet = new(std::nothrow) GameScene;
-    if (pRet && pRet->init())
+    if (pRet && pRet->init(ePlay))
     {
         pRet->autorelease();
         return pRet;
@@ -49,18 +49,26 @@ GameScene* GameScene::create()
     }
 }
 
-bool GameScene::init()
+bool GameScene::init(menu::PLAY ePlay)
 {
     if ( false == Scene::init() )
     {
         return false;
     }
-
-    addStage(stage::name::Stage1, Stage1Layer::create());
-    addStage(stage::name::Stage2, Stage2Layer::create());
     
-    changeStage(stage::name::Stage1);
-
+    playState_ = ePlay;
+    addStage(stage::name::Stage1, Stage1Layer::create(playState_));
+    addStage(stage::name::Stage2, Stage2Layer::create(playState_));
+    
+    if(menu::PLAY::NEW == ePlay)
+    {
+        changeStage(stage::name::Stage1);
+    }
+    else if(menu::PLAY::LOAD == ePlay)
+    {
+        load();
+    }
+    
     
     KeyMgr* pKeyMgr = KeyMgr::getInstance();
     this->addChild(pKeyMgr);
@@ -74,7 +82,7 @@ bool GameScene::init()
 
 void GameScene::changeStage(std::string stageName)
 {
-    Layer* stage = mapStage_[stageName];
+    StageLayer* stage = mapStage_[stageName];
     if(nullptr == stage)
         assert(0);
     
@@ -84,7 +92,7 @@ void GameScene::changeStage(std::string stageName)
     this->addChild(stage);
 }
 
-void GameScene::addStage(std::string key, Layer* pLayer)
+void GameScene::addStage(std::string key, StageLayer* pLayer)
 {
     pLayer->retain();
     
@@ -102,13 +110,13 @@ void GameScene::save()
 {
 	for (auto& stage : mapStage_)
 	{
+        const char* json = "{\"playerX\":0,\"playerY\":0,\"coinX\":[],\"coinY\":[],\"score\":0,\"finalStage\":0}";
+        rapidjson::Document doc;
+        doc.Parse(json);
+        
 		Player* pPlayer = ((StageLayer*)mapStage_[stage.first])->getPlayer();
 		float fX = (pPlayer->getSprite())->getPosition().x;
 		float fY = (pPlayer->getSprite())->getPosition().y;
-
-		const char* json = "{\"playerX\":0,\"playerY\":0,\n\"coinX\":[],\n\"coinY\":[],\n\"score\":0}";
-		rapidjson::Document doc;
-		doc.Parse(json);
 
 		//player
 		rapidjson::Value& val1 = doc["playerX"];
@@ -119,7 +127,6 @@ void GameScene::save()
 
 		//coin
 		Vector<Node*> childrenVector = mapStage_[stage.first]->getChildren();
-		int size = childrenVector.size();
 
 		rapidjson::Value& val3 = doc["coinX"];
 		rapidjson::Value& val4 = doc["coinY"];
@@ -139,17 +146,23 @@ void GameScene::save()
 				++cnt;
 			}
 		}
-
-		//score
-		rapidjson::Value& val5 = doc["score"];
-		val5.SetInt(DataMgr::getInstance()->getScore());
-
+        
+        //score
+        rapidjson::Value& val5 = doc["score"];
+        val5.SetInt(DataMgr::getInstance()->getScore());
+        
+        //final stage
+        std::string finalStageName = ((StageLayer*)curStage_)->getStageName();
+        
+        rapidjson::Value& val6 = doc["finalStage"];
+        val6.SetString(finalStageName.c_str(), finalStageName.length());
+        
 		//
 		rapidjson::StringBuffer buf;
 		rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
 		doc.Accept(writer);
 
-		FILE* pfile = nullptr;
+        FILE* pfile = nullptr;
 
 		std::string filePath = FileUtils::getInstance()->getWritablePath();
 		if (stage::name::Stage1 == stage.first)
@@ -161,8 +174,33 @@ void GameScene::save()
 			filePath += stage::fileName::data_Stage2;
 		}
 
-		fopen_s(&pfile, filePath.c_str(), "wt");
+        pfile = fopen(filePath.c_str(), "wt");
+        
 		fwrite(buf.GetString(), buf.GetSize(), 1, pfile);
 		fclose(pfile);
-	}	
+	}
+}
+
+void GameScene::load()
+{
+    std::string filePath = FileUtils::getInstance()->getWritablePath() + stage::fileName::data_Stage1;
+    //파일이름은 뭐가 와도 상관 없음, 파일 모두에 마지막 스테이지정보 저장했음
+    
+    std::string fileData = FileUtils::getInstance()->getStringFromFile(filePath.c_str());
+    
+    std::string clearData(fileData);
+    size_t end = clearData.rfind("}");
+    clearData = clearData.substr(0, end + 1);
+    
+    rapidjson::Document doc;
+    doc.Parse<0>(clearData.c_str());
+    if (doc.HasParseError())
+    {
+        return;
+    }
+
+    rapidjson::Value& val1 = doc["finalStage"];
+    std:: string fianlStageName = val1.GetString();
+    
+    changeStage(fianlStageName);
 }

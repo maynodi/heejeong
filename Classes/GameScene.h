@@ -1,26 +1,32 @@
 #pragma once
 
 #include "cocos2d.h"
+#include "StageDefine.h"
+
+class StageLayer;
 
 class GameScene : public cocos2d::Scene
 {
 private:
-    cocos2d::Layer* curStage_;
-    std::map<std::string, cocos2d::Layer*> mapStage_;
+    StageLayer* curStage_;
+    std::map<std::string, StageLayer*> mapStage_;
+    menu::PLAY playState_;
     
 public:
-    static GameScene* create();
+    static GameScene* create(menu::PLAY ePlay);
     
 public:
-    virtual bool init() override;
+    bool init(menu::PLAY ePlay);
     
 public:
-    cocos2d::Layer* getCurStage() { return curStage_; }
+    StageLayer* getCurStage() { return curStage_; }
+    menu::PLAY getPlayState() { return playState_; }
     
 public:
     void changeStage(std::string stageName);
-    void addStage(std::string key, cocos2d::Layer* pLayer);
+    void addStage(std::string key, StageLayer* pLayer);
     void save();
+    void load();
 
     
 public:
